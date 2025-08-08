@@ -200,7 +200,7 @@ async def process_amount(message: types.Message, state: FSMContext):
     add_expense(message.from_user.first_name, data["category"], data["title"], amount)
     await message.answer(f"Готово! {data['category']} — {data['title']} — {amount:.2f} ₽")
     await state.clear()
-    await show_main_menu(message)
+
 
 @router.message(F.text == "Отчет месяц")
 async def report_month(message: types.Message):
