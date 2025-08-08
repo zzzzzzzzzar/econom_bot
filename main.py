@@ -160,7 +160,11 @@ async def show_main_menu(message: types.Message):
         ],
         resize_keyboard=True
     )
-    await message.answer("Добро пожаловать! Выберите действие:", reply_markup=keyboard)
+    text = "Добро пожаловать! Выберите действие:" if greet else None
+    if text:
+        await message.answer(text, reply_markup=keyboard)
+    else:
+        await message.answer(reply_markup=keyboard)
 
 @router.message(F.text == "Добавить расход")
 async def handle_add_expense(message: types.Message, state: FSMContext):
@@ -200,6 +204,7 @@ async def process_amount(message: types.Message, state: FSMContext):
     add_expense(message.from_user.first_name, data["category"], data["title"], amount)
     await message.answer(f"Готово! {data['category']} — {data['title']} — {amount:.2f} ₽")
     await state.clear()
+    await show_main_menu(message, greet=False)
 
 
 @router.message(F.text == "Отчет месяц")
