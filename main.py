@@ -115,10 +115,12 @@ def generate_plot():
         ax.set_title("Расходы за неделю по категориям")
         ax.set_ylabel("Сумма, ₽")
         fig.tight_layout()
-        file = ".venv/expenses_plot.png"
+
+        file = os.path.join(os.path.dirname(__file__), "expenses_plot.png")
         fig.savefig(file)
         plt.close(fig)
         return file
+
 
 # ===== FSM =====
 class AuthForm(StatesGroup):
