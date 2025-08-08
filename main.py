@@ -13,6 +13,9 @@ from dotenv import load_dotenv
 import asyncio
 import pandas as pd
 import matplotlib.pyplot as plt
+import tempfile
+import os
+
 
 # ===== .env =====
 load_dotenv()
@@ -84,7 +87,7 @@ def build_excel_report():
             "SELECT user, category, SUM(amount) as total FROM expenses GROUP BY user, category", conn
         )
         df = df.sort_values(by=["category", "user"])
-        filename = ".venv/expenses_export.xlsx"
+        filename = os.path.join(tempfile.gettempdir(), "expenses_export.xlsx")
         df.to_excel(filename, index=False)
         return filename
 
