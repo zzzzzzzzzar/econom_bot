@@ -235,17 +235,23 @@ async def report_day(message: types.Message):
 
 @router.message(F.text == "Экспорт в Excel")
 async def export_excel_handler(message: types.Message):
-    file = build_excel_report()
-    await message.answer_document(FSInputFile(file))
+    try:
+        file = build_excel_report()
+        await message.answer_document(FSInputFile(file))
+    except Exception as e:
+        await message.answer(f"❌ Ошибка при экспорте Excel:\n<code>{e}</code>", parse_mode="HTML")
 
 
 @router.message(F.text == "График PNG")
 async def plot_png_handler(message: types.Message):
-    file = generate_plot()
-    if not file:
-        await message.answer("Недостаточно данных для графика.")
-        return
-    await message.answer_photo(FSInputFile(file))
+    try:
+        file = generate_plot()
+        if not file:
+            await message.answer("Недостаточно данных для графика.")
+            return
+        await message.answer_photo(FSInputFile(file))
+    except Exception as e:
+        await message.answer(f"❌ Ошибка при построении графика:\n<code>{e}</code>", parse_mode="HTML")
 
 # ===== MAIN =====
 async def main():
