@@ -151,7 +151,7 @@ async def process_password(message: types.Message, state: FSMContext):
     else:
         await message.answer("Неверный пароль. Попробуйте снова.")
 
-async def show_main_menu(message: types.Message):
+async def show_main_menu(message: types.Message, greet: bool = True):
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="Добавить расход")],
@@ -160,11 +160,10 @@ async def show_main_menu(message: types.Message):
         ],
         resize_keyboard=True
     )
-    text = "Добро пожаловать! Выберите действие:" if greet else None
-    if text:
-        await message.answer(text, reply_markup=keyboard)
-    else:
-        await message.answer(reply_markup=keyboard)
+    text = "Добро пожаловать! Выберите действие:" if greet else "Добавь еще"  # невидимый символ
+    await message.answer(text, reply_markup=keyboard)
+
+
 
 @router.message(F.text == "Добавить расход")
 async def handle_add_expense(message: types.Message, state: FSMContext):
